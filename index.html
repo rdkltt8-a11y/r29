@@ -1,344 +1,361 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>R29 TEAM — Інфраструктура Трафіку • Web3 Підхід</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Анжела • Маникюр Мариуполь | Черёмушки</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --rose: #e11d48;
+      --rose-dark: #be123c;
+    }
     body {
-      background:#0B0F14;
-      color:#EAEAEA;
-      font-family:'Segoe UI', system-ui, sans-serif;
-      line-height:1.6;
-      overflow-x:hidden;
+      font-family: 'Inter', system-ui, sans-serif;
     }
-    canvas {
-      position:fixed;
-      inset:0;
-      z-index:1;
-      pointer-events:none;
-      opacity:0.65;
+    .logo-font {
+      font-family: 'Playfair Display', serif;
     }
-    header {
-      position:fixed;
-      top:0;
-      width:100%;
-      background:rgba(11,15,20,0.85);
-      backdrop-filter:blur(10px);
-      z-index:20;
-      padding:15px 0;
-      border-bottom:1px solid rgba(108,92,231,0.3);
+    .hero-bg {
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.55)), url('https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover no-repeat fixed;
     }
-    nav {
-      max-width:1200px;
-      margin:0 auto;
-      padding:0 20px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
+    .nail-card {
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    .logo {
-      font-size:1.8rem;
-      font-weight:bold;
-      color:#6C5CE7;
-      text-shadow:0 0 10px #6C5CE7;
+    .nail-card:hover {
+      transform: translateY(-12px) scale(1.04);
+      box-shadow: 0 25px 50px -12px rgba(225, 29, 72, 0.28);
     }
-    .nav-links a {
-      color:#8A8F98;
-      margin-left:30px;
-      text-decoration:none;
-      font-weight:600;
-      transition:0.3s;
+    .gallery-img {
+      transition: all 0.5s ease;
     }
-    .nav-links a:hover,
-    .nav-links a.active {
-      color:#00F0FF;
-      text-shadow:0 0 10px #00F0FF;
+    .gallery-img:hover {
+      transform: scale(1.09);
+      filter: brightness(1.15);
     }
-    .container {
-      position:relative;
-      z-index:10;
-      max-width:1200px;
-      margin:0 auto;
-      padding:120px 20px 80px;
+    .time-slot {
+      transition: all 0.25s ease;
     }
-    section {
-      padding:100px 0;
-      min-height:60vh;
+    .time-slot:hover:not(.selected) {
+      background-color: #fce7f3;
+      transform: scale(1.06);
     }
-    h1, h2 {
-      font-weight:900;
-      letter-spacing:-0.03em;
-      margin-bottom:1.2rem;
+    .time-slot.selected {
+      background-color: var(--rose);
+      color: white;
+      border-color: var(--rose);
     }
-    h1 { font-size:clamp(4.5rem, 12vw, 10rem); }
-    h2 { font-size:clamp(2.8rem, 7vw, 5rem); }
-    .accent { color:#6C5CE7; }
-    .neon-btn {
-      padding:16px 40px;
-      font-size:1.3rem;
-      font-weight:bold;
-      background:transparent;
-      border:1px solid #6C5CE7;
-      color:#EAEAEA;
-      border-radius:8px;
-      cursor:pointer;
-      transition:all 0.4s ease;
-      box-shadow:0 0 18px rgba(108,92,231,0.4);
-    }
-    .neon-btn:hover {
-      box-shadow:0 0 40px #6C5CE7, 0 0 70px #00F0FF;
-      border-color:#00F0FF;
-    }
-    .card-grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
-      gap:30px;
-      margin-top:50px;
-    }
-    .card {
-      background:rgba(17,22,29,0.65);
-      border:1px solid rgba(108,92,231,0.3);
-      border-radius:8px;
-      padding:30px;
-      transition:all 0.4s ease;
-      backdrop-filter:blur(6px);
-    }
-    .card:hover {
-      transform:translateY(-8px);
-      box-shadow:0 0 35px rgba(108,92,231,0.5);
-    }
-    .steps {
-      list-style:none;
-      margin-top:40px;
-    }
-    .steps li {
-      position:relative;
-      padding-left:60px;
-      margin-bottom:40px;
-      font-size:1.3rem;
-    }
-    .steps li::before {
-      content:attr(data-step);
-      position:absolute;
-      left:0;
-      top:0;
-      width:40px;
-      height:40px;
-      background:#6C5CE7;
-      color:#0B0F14;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:bold;
-    }
-    .fade-up {
-      opacity:0;
-      transform:translateY(50px);
-      transition:all 0.8s ease-out;
-    }
-    .fade-up.visible {
-      opacity:1;
-      transform:translateY(0);
-    }
-    footer {
-      text-align:center;
-      padding:60px 0 30px;
-      border-top:1px solid rgba(108,92,231,0.2);
-      color:#8A8F98;
-    }
-    @media (max-width:768px) {
-      nav { flex-direction:column; gap:15px; }
-      .nav-links a { margin:0 15px; }
-      section { padding:60px 0; }
-      .card-grid { grid-template-columns:1fr; }
+    .form-input:focus {
+      border-color: var(--rose);
+      box-shadow: 0 0 0 4px rgba(225,29,72,0.15);
+      outline: none;
     }
   </style>
 </head>
-<body>
+<body class="bg-zinc-50 text-zinc-800 min-h-screen">
 
-<canvas id="network"></canvas>
+  <!-- Навигация -->
+  <nav class="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md z-50 border-b border-rose-100/50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="text-3xl">💅</div>
+        <span class="logo-font text-3xl font-bold text-rose-600 tracking-tight">Анжела</span>
+      </div>
 
-<header>
-  <nav>
-    <div class="logo">R29 TEAM</div>
-    <div class="nav-links">
-      <a href="#home" class="active">Головна</a>
-      <a href="#accounts">Акаунти</a>
-      <a href="#creatives">Креативи</a>
-      <a href="#landings">Лендінги</a>
+      <div class="hidden md:flex items-center gap-8 font-medium">
+        <a href="#services" class="hover:text-rose-600 transition">Услуги</a>
+        <a href="#gallery"  class="hover:text-rose-600 transition">Работы</a>
+        <a href="#booking"  class="hover:text-rose-600 transition">Запись</a>
+        <a href="#contacts" class="hover:text-rose-600 transition">Контакты</a>
+      </div>
+
+      <a href="tel:+79498370146"
+         class="bg-rose-600 hover:bg-rose-700 text-white px-6 py-3 rounded-xl font-medium flex items-center gap-2 transition shadow-md shadow-rose-200/40">
+        <i class="fa-solid fa-phone"></i> +7 949 837-01-46
+      </a>
     </div>
   </nav>
-</header>
 
-<div class="container">
+  <!-- Hero -->
+  <section class="hero-bg h-screen flex items-center text-white relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/30 pointer-events-none"></div>
 
-  <!-- Головна сторінка -->
-  <section id="home">
-    <div class="fade-up" style="text-align:center; min-height:80vh; display:flex; flex-direction:column; justify-content:center;">
-      <h1 class="accent">R29 TEAM</h1>
-      <div style="font-size:2.2rem; margin:20px 0; color:#8A8F98;">
-        Інфраструктура трафіку • Web3 Підхід • З 2023
+    <div class="max-w-5xl mx-auto px-6 text-center z-10">
+      <div class="inline-block mb-6 px-7 py-2 bg-white/15 backdrop-blur-lg rounded-full text-sm font-medium tracking-wider">
+        МАРИУПОЛЬ • ЧЕРЁМУШКИ
       </div>
-      <p style="font-size:1.8rem; max-width:900px; margin:0 auto 40px;">
-        Будуй. Запускай. Масштабуй.
+      <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold logo-font leading-tight mb-6 drop-shadow-lg">
+        Идеальные ногти<br>у Анжелы
+      </h1>
+      <p class="text-xl md:text-2xl max-w-xl mx-auto mb-10 text-rose-50/90 font-light">
+        Премиум маникюр и педикюр в уютной студии. Качество, стиль и забота о тебе ✨
       </p>
-      <p style="font-size:1.4rem; max-width:800px; margin:0 auto 50px;">
-        Створюємо інфраструктуру трафіку для цифрових проєктів.<br>
-        White & Grey ніші. Facebook Ads • Nutra • Gambling • Стартапи
-      </p>
-      <div style="display:flex; gap:30px; justify-content:center; flex-wrap:wrap;">
-        <button class="neon-btn">Почати проєкт</button>
-        <button class="neon-btn">Отримати консультацію</button>
-      </div>
-    </div>
 
-    <!-- Who We Are -->
-    <div class="fade-up">
-      <h2 class="accent">Хто ми</h2>
-      <p>R29 TEAM — digital-команда, орієнтована на трафік, працює з 2023 року.</p>
-      <p>Допомагаємо:</p>
-      <ul>
-        <li>— запускати проєкти</li>
-        <li>— будувати рекламні системи</li>
-        <li>— масштабувати paid traffic</li>
-        <li>— навчати новачків</li>
-      </ul>
-      <p>Поєднуємо стратегію, тестування та інфраструктуру.</p>
-      <p style="font-style:italic;">Без хаосу. Тільки система.</p>
-    </div>
-
-    <!-- What We Do -->
-    <div class="fade-up">
-      <h2 class="accent">Що ми робимо</h2>
-      <div class="card-grid">
-        <div class="card">Налаштування Paid Traffic<br>Повний запуск та оптимізація Facebook Ads.</div>
-        <div class="card">Лендінги<br>Висококонверсійні односторінкові воронки під платний трафік.</div>
-        <div class="card">Виробництво креативів<br>Статика, відео, UGC. Швидке тестування гіпотез.</div>
-        <div class="card">Інфраструктура акаунтів<br>Підготовка, прогрів, управління ризиками.</div>
-        <div class="card">Навчання трафіку<br>Вчимо структурованому запуску реклами для новачків.</div>
-        <div class="card">Запуск та масштабування проєктів<br>Від ідеї до стабільного потоку трафіку.</div>
+      <div class="flex flex-col sm:flex-row gap-5 justify-center">
+        <a href="#booking"
+           class="bg-white text-rose-700 hover:bg-rose-50 font-semibold text-lg px-10 py-6 rounded-2xl shadow-2xl transition-all">
+          Записаться онлайн
+        </a>
+        <a href="tel:+79498370146"
+           class="border-2 border-white hover:bg-white/15 text-white font-semibold text-lg px-10 py-6 rounded-2xl transition-all flex items-center justify-center gap-3">
+          <i class="fa-solid fa-phone"></i> Позвонить
+        </a>
       </div>
     </div>
 
-    <!-- Process -->
-    <div class="fade-up">
-      <h2 class="accent">Процес</h2>
-      <ol class="steps">
-        <li data-step="1">Аналіз ніші</li>
-        <li data-step="2">Побудова стратегії</li>
-        <li data-step="3">Налаштування інфраструктури</li>
-        <li data-step="4">Фаза тестування</li>
-        <li data-step="5">Оптимізація</li>
-        <li data-step="6">Масштабування</li>
-      </ol>
-      <p style="font-size:1.4rem; margin-top:60px; font-style:italic; text-align:center;">
-        Ми не продаємо «легкі гроші».<br>Ми будуємо системи.
-      </p>
-    </div>
-
-    <!-- CTA -->
-    <div class="fade-up" style="text-align:center; margin-top:80px;">
-      <h2 class="accent">Готові запускати?</h2>
-      <p style="font-size:1.6rem; max-width:700px; margin:0 auto 40px;">Давай побудуємо твою систему трафіку.</p>
-      <button class="neon-btn" style="font-size:1.6rem; padding:20px 60px;">Зв’язатися з R29 TEAM</button>
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+      <i class="fa-solid fa-chevron-down text-4xl text-white/60"></i>
     </div>
   </section>
 
-  <!-- Вкладка: Продаж акаунтів -->
-  <section id="accounts" style="display:none;">
-    <div class="fade-up">
-      <h2 class="accent">Продаж акаунтів</h2>
-      <p>Пропонуємо перевірені, прогріті та готові до масштабування Facebook-акаунти.</p>
-      <ul>
-        <li>Фарм 3–12 місяців</li>
-        <li>З історією активності</li>
-        <li>Різні гео та траст-рівні</li>
-        <li>Повний пакет: cookie, user-agent, проксі (опціонально)</li>
-      </ul>
-      <p style="margin-top:40px;">Ціни від 50$ до 500$ залежно від трасту та віку.</p>
-      <button class="neon-btn" style="margin-top:30px;">Замовити акаунт</button>
+  <!-- Услуги -->
+  <section id="services" class="py-20 md:py-28 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <div class="text-rose-600 uppercase tracking-widest text-sm font-medium mb-3">Услуги и цены</div>
+        <h2 class="text-4xl md:text-5xl font-bold logo-font">Что я предлагаю</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="nail-card bg-white rounded-3xl overflow-hidden border border-rose-100 shadow-lg">
+          <div class="h-2 bg-gradient-to-r from-rose-400 to-pink-500"></div>
+          <div class="p-8">
+            <h3 class="text-2xl font-semibold mb-3">Маникюр + гель-лак</h3>
+            <p class="text-zinc-600 mb-6">Комбинированный / классический + стойкое покрытие</p>
+            <div class="text-4xl font-bold text-rose-600">1 400 ₽</div>
+          </div>
+        </div>
+
+        <div class="nail-card bg-white rounded-3xl overflow-hidden border border-rose-100 shadow-lg">
+          <div class="h-2 bg-gradient-to-r from-amber-400 to-yellow-500"></div>
+          <div class="p-8">
+            <h3 class="text-2xl font-semibold mb-3">Наращивание гелем</h3>
+            <p class="text-zinc-600 mb-6">На формы / типсы, любая длина</p>
+            <div class="text-4xl font-bold text-rose-600">2 800 ₽</div>
+          </div>
+        </div>
+
+        <div class="nail-card bg-white rounded-3xl overflow-hidden border border-rose-100 shadow-lg">
+          <div class="h-2 bg-gradient-to-r from-violet-400 to-purple-500"></div>
+          <div class="p-8">
+            <h3 class="text-2xl font-semibold mb-3">Сложный дизайн</h3>
+            <p class="text-zinc-600 mb-6">Стразы, втирка, роспись, 3D</p>
+            <div class="text-4xl font-bold text-rose-600">от 400 ₽</div>
+          </div>
+        </div>
+
+        <div class="nail-card bg-white rounded-3xl overflow-hidden border border-rose-100 shadow-lg">
+          <div class="h-2 bg-gradient-to-r from-teal-400 to-cyan-500"></div>
+          <div class="p-8">
+            <h3 class="text-2xl font-semibold mb-3">Педикюр + гель-лак</h3>
+            <p class="text-zinc-600 mb-6">SPA-уход + красивое покрытие</p>
+            <div class="text-4xl font-bold text-rose-600">1 700 ₽</div>
+          </div>
+        </div>
+
+        <div class="nail-card bg-white rounded-3xl overflow-hidden border border-rose-100 shadow-lg">
+          <div class="h-2 bg-gradient-to-r from-rose-500 to-pink-600"></div>
+          <div class="p-8">
+            <h3 class="text-2xl font-semibold mb-3">Аппаратный маникюр</h3>
+            <p class="text-zinc-600 mb-6">Укрепление, выравнивание, премиум</p>
+            <div class="text-4xl font-bold text-rose-600">1 600 ₽</div>
+          </div>
+        </div>
+
+        <div class="nail-card bg-white rounded-3xl overflow-hidden border border-rose-100 shadow-lg">
+          <div class="h-2 bg-gradient-to-r from-orange-400 to-amber-500"></div>
+          <div class="p-8">
+            <h3 class="text-2xl font-semibold mb-3">Снятие + новый маникюр</h3>
+            <p class="text-zinc-600 mb-6">Бережное снятие старого покрытия</p>
+            <div class="text-4xl font-bold text-rose-600">1 800 ₽</div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Вкладка: Креативи -->
-  <section id="creatives" style="display:none;">
-    <div class="fade-up">
-      <h2 class="accent">Креативи</h2>
-      <p>Створюємо ефективні креативи під будь-яку нішу: Nutra, Gambling, E-com, Sweepstakes.</p>
-      <ul>
-        <li>Статика (банери, пости)</li>
-        <li>Відео (15–60 сек)</li>
-        <li>UGC-стиль</li>
-        <li>Швидке A/B-тестування</li>
-        <li>Пакети: 10–50 креативів</li>
-      </ul>
-      <p style="margin-top:40px;">Термін: від 2 днів. Ціна за пакет від 150$.</p>
-      <button class="neon-btn" style="margin-top:30px;">Замовити креативи</button>
+  <!-- Форма записи -->
+  <section id="booking" class="py-20 md:py-28 bg-gradient-to-b from-zinc-50 to-white">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-bold logo-font mb-4">Записаться к Анжеле</h2>
+        <p class="text-xl text-zinc-600">Заполни форму — я свяжусь с тобой в течение 15–30 минут</p>
+      </div>
+
+      <form id="booking-form" class="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-rose-100/50">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-zinc-600 mb-2">Имя</label>
+            <input required id="name" type="text" placeholder="Как тебя зовут?" class="form-input w-full px-5 py-4 border border-zinc-300 rounded-2xl text-lg focus:border-rose-500"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-zinc-600 mb-2">Телефон</label>
+            <input required id="phone" type="tel" placeholder="+7 9XX XXX-XX-XX" class="form-input w-full px-5 py-4 border border-zinc-300 rounded-2xl text-lg focus:border-rose-500"/>
+          </div>
+        </div>
+
+        <div class="mt-8">
+          <label class="block text-sm font-medium text-zinc-600 mb-3">Услуга</label>
+          <div id="services-select" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+        </div>
+
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-zinc-600 mb-2">Желаемая дата</label>
+            <input required id="date" type="date" class="form-input w-full px-5 py-4 border border-zinc-300 rounded-2xl text-lg"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-zinc-600 mb-3">Время</label>
+            <div id="time-slots" class="grid grid-cols-4 sm:grid-cols-5 gap-2 text-center text-sm"></div>
+          </div>
+        </div>
+
+        <div class="mt-8">
+          <label class="block text-sm font-medium text-zinc-600 mb-2">Пожелания / дизайн</label>
+          <textarea id="comment" rows="4" placeholder="Хочу французский маникюр с втиркой и стразами на безымянный палец..." class="form-input w-full px-5 py-4 border border-zinc-300 rounded-2xl resize-none focus:border-rose-500"></textarea>
+        </div>
+
+        <button type="submit"
+                class="mt-10 w-full bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-700 hover:to-rose-600 text-white font-semibold text-xl py-6 rounded-2xl shadow-xl transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                id="submit-btn">
+          <i class="fa-solid fa-paper-plane"></i>
+          Отправить заявку
+        </button>
+
+        <p id="form-status" class="text-center mt-4 text-sm min-h-[1.5rem]"></p>
+      </form>
     </div>
   </section>
 
-  <!-- Вкладка: Лендінги -->
-  <section id="landings" style="display:none;">
-    <div class="fade-up">
-      <h2 class="accent">Лендінги</h2>
-      <p>Розробляємо висококонверсійні односторінкові сайти, заточені саме під платний трафік.</p>
-      <ul>
-        <li>Мобайл-фокус (90%+ трафіку)</li>
-        <li>Швидке завантаження (<1.5s)</li>
-        <li>Клоакінг-ready структура</li>
-        <li>Інтеграція пікселів, форм, кнопок</li>
-        <li>Термін: 3–7 днів</li>
-      </ul>
-      <p style="margin-top:40px;">Ціна від 300$ (простий) до 1200$ (преміум з анімаціями).</p>
-      <button class="neon-btn" style="margin-top:30px;">Замовити лендінг</button>
+  <!-- Контакты + футер -->
+  <section class="py-20 bg-zinc-900 text-white">
+    <div class="max-w-5xl mx-auto px-6 text-center">
+      <h2 class="text-4xl md:text-5xl font-bold logo-font mb-8">Жду тебя в студии</h2>
+      <div class="text-xl md:text-2xl mb-10">
+        Мариуполь, район Черёмушки<br>
+        Точный адрес и подъезд — по договорённости
+      </div>
+
+      <a href="tel:+79498370146" class="inline-flex items-center gap-4 bg-rose-600 hover:bg-rose-700 px-10 py-6 rounded-2xl text-2xl font-medium shadow-xl transition-all">
+        <i class="fa-solid fa-phone-volume text-3xl"></i>
+        +7 949 837-01-46
+      </a>
+
+      <div class="mt-16 text-zinc-400 text-sm">
+        © 2026 Студия маникюра Анжелы
+      </div>
     </div>
   </section>
 
-</div>
+  <script>
+    // ────────────────────────────────────────────────
+    // Данные услуг и времени (можно менять)
+    // ────────────────────────────────────────────────
+    const SERVICES = [
+      "Маникюр + гель-лак — 1400 ₽",
+      "Наращивание гелем — 2800 ₽",
+      "Педикюр + гель-лак — 1700 ₽",
+      "Аппаратный маникюр — 1600 ₽",
+      "Снятие + новый маникюр — 1800 ₽",
+      "Сложный дизайн — от 400 ₽"
+    ];
 
-<footer>
-  R29 TEAM © 2023–2026 • Ukraine • All rights reserved
-</footer>
+    const TIMES = ["10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00"];
 
-<script>
-// Просте перемикання вкладок (без роутера, для демо)
-const links = document.querySelectorAll('.nav-links a');
-const sections = document.querySelectorAll('section');
+    // ────────────────────────────────────────────────
+    // Рендер услуг
+    // ────────────────────────────────────────────────
+    function renderServices() {
+      const container = document.getElementById('services-select');
+      container.innerHTML = '';
+      SERVICES.forEach((s, i) => {
+        const div = document.createElement('div');
+        div.className = `border-2 rounded-2xl px-4 py-3 cursor-pointer text-center transition-all text-sm md:text-base ${i===0 ? 'border-rose-500 bg-rose-50' : 'border-zinc-200 hover:border-rose-300'}`;
+        div.textContent = s;
+        div.onclick = () => {
+          container.querySelectorAll('div').forEach(el => el.classList.remove('border-rose-500','bg-rose-50'));
+          div.classList.add('border-rose-500','bg-rose-50');
+        };
+        container.appendChild(div);
+      });
+    }
 
-links.forEach(link => {
-  link.addEventListener('click', (e) => {
-    e.preventDefault();
-    const targetId = link.getAttribute('href').substring(1);
+    // ────────────────────────────────────────────────
+    // Рендер слотов времени
+    // ────────────────────────────────────────────────
+    function renderTimeSlots() {
+      const container = document.getElementById('time-slots');
+      container.innerHTML = '';
+      TIMES.forEach(t => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'time-slot border border-zinc-200 rounded-xl py-3 px-2 text-sm font-medium hover:bg-rose-50';
+        btn.textContent = t;
+        btn.onclick = () => {
+          container.querySelectorAll('.time-slot').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+        };
+        container.appendChild(btn);
+      });
+    }
 
-    links.forEach(l => l.classList.remove('active'));
-    link.classList.add('active');
+    // ────────────────────────────────────────────────
+    // Отправка формы через Cloudflare Worker
+    // ────────────────────────────────────────────────
+    const WORKER_URL = 'https://твой-worker-name.твой-username.workers.dev';   // ←←← ЗАМЕНИ ЭТУ СТРОКУ !!!
 
-    sections.forEach(sec => {
-      sec.style.display = (sec.id === targetId) ? 'block' : 'none';
+    async function handleSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      const status = document.getElementById('form-status');
+      btn.disabled = true;
+      status.textContent = 'Отправка...';
+
+      const formData = new FormData(e.target);
+
+      // Добавляем выбранные значения, которых нет в полях
+      const selectedServiceEl = document.querySelector('#services-select .border-rose-500');
+      const selectedTimeEl   = document.querySelector('#time-slots .selected');
+
+      formData.append('service', selectedServiceEl ? selectedServiceEl.textContent : '—');
+      formData.append('time',    selectedTimeEl   ? selectedTimeEl.textContent   : '—');
+
+      try {
+        const res = await fetch(WORKER_URL, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (res.ok) {
+          status.innerHTML = '<span class="text-green-600 font-medium">Заявка отправлена! Анжела скоро свяжется 💅</span>';
+          e.target.reset();
+          document.querySelectorAll('.selected, .border-rose-500').forEach(el => el.classList.remove('selected','border-rose-500','bg-rose-50'));
+        } else {
+          status.innerHTML = '<span class="text-red-600">Ошибка сервера. Позвони, пожалуйста: +7 949 837-01-46</span>';
+        }
+      } catch (err) {
+        status.innerHTML = '<span class="text-red-600">Нет соединения. Попробуй позже или позвони</span>';
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    // Инициализация
+    document.addEventListener('DOMContentLoaded', () => {
+      renderServices();
+      renderTimeSlots();
+
+      // завтра по умолчанию
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      document.getElementById('date').value = tomorrow.toISOString().split('T')[0];
+
+      document.getElementById('booking-form').addEventListener('submit', handleSubmit);
     });
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-});
-
-// Початково показуємо головну
-document.getElementById('home').style.display = 'block';
-
-// Canvas паутина (з попередньої версії, яскрава)
-const canvas = document.getElementById('network');
-const ctx = canvas.getContext('2d');
-let w, h, nodes = [], mouse = {x:null,y:null};
-
-function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;nodes=[];const c=Math.floor(w*h/30000);for(let i=0;i<c;i++){nodes.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-0.5)*0.15,vy:(Math.random()-0.5)*0.15,r:1.8,pulse:Math.random()*Math.PI*2})}}
-function draw(){ctx.clearRect(0,0,w,h);const t=Date.now()*0.001;nodes.forEach(n=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>w)n.vx*=-1;if(n.y<0||n.y>h)n.vy*=-1;if(mouse.x!==null){const dx=mouse.x-n.x,dy=mouse.y-n.y,d=Math.hypot(dx,dy);if(d<220){n.x+=dx/d*0.18;n.y+=dy/d*0.18}}const s=n.r+Math.sin(t+n.pulse)*0.6;ctx.beginPath();ctx.arc(n.x,n.y,s,0,Math.PI*2);ctx.fillStyle='#6C5CE7';ctx.shadowBlur=15;ctx.shadowColor='#6C5CE7';ctx.fill()});for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){let dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.hypot(dx,dy);if(d<220){ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);ctx.strokeStyle=`rgba(0,240,255,${0.25-d/2200})`;ctx.lineWidth=0.8;ctx.stroke()}}requestAnimationFrame(draw)}
-window.addEventListener('resize',resize);document.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY});resize();draw();
-
-// Fade-up
-const obs = new IntersectionObserver(e=>e.forEach(en=>{if(en.isIntersecting)en.target.classList.add('visible')}),{threshold:0.1});
-document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
-</script>
+  </script>
 </body>
 </html>
