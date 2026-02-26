@@ -1,1 +1,219 @@
-11
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анжела • Маникюр Мариуполь</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --card: #1a1a1a;
+            --rose: #e11d48;
+            --gold: #d4af37;
+            --text: #e5e5e5;
+            --muted: #a1a1aa;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        .logo-font { font-family: 'Playfair Display', serif; }
+        .hero-bg {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.85)),
+                        url('https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover no-repeat fixed;
+        }
+        input, textarea, button {
+            transition: all 0.3s ease;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--rose);
+            box-shadow: 0 0 0 3px rgba(225,29,72,0.2);
+        }
+        .service-card {
+            transition: all 0.4s;
+        }
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(225,29,72,0.12);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Навбар -->
+    <nav class="fixed top-0 w-full bg-black/80 backdrop-blur-xl z-50 border-b border-zinc-800">
+        <div class="max-w-6xl mx-auto px-5 py-5 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="text-4xl">💅</span>
+                <span class="logo-font text-3xl font-bold text-rose-500">Анжела</span>
+            </div>
+            <a href="tel:+79498370146" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-2.5 rounded-2xl font-medium flex items-center gap-2 text-sm md:text-base">
+                <i class="fa-solid fa-phone"></i> +7 949 837-01-46
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero-bg min-h-screen flex items-center pt-20">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <div class="text-rose-400 text-sm tracking-widest mb-4">МАРИУПОЛЬ • ЧЕРЁМУШКИ</div>
+            <h1 class="logo-font text-5xl sm:text-6xl md:text-7xl font-bold leading-tight mb-6">
+                Премиум маникюр<br>в тёмном стиле
+            </h1>
+            <p class="text-xl md:text-2xl text-zinc-300 max-w-xl mx-auto mb-10">
+                Черный хром, матовые покрытия, золото и стразы — только премиум материалы
+            </p>
+            <a href="#booking" class="inline-block bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xl px-12 py-6 rounded-3xl shadow-2xl transition">
+                Записаться онлайн
+            </a>
+        </div>
+    </section>
+
+    <!-- Галерея работ -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="logo-font text-5xl font-bold text-center mb-12">Мои работы</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-5">
+                <img src="https://cdn.shopify.com/s/files/1/0825/4039/6826/files/black-coffin-shape-elegance.jpg?v=1754976183" class="rounded-3xl shadow-2xl w-full h-64 object-cover" alt="Black elegance nails">
+                <img src="https://cdn.shopify.com/s/files/1/0825/4039/6826/files/black-glitter-gradient-nails.jpg?v=1754976183" class="rounded-3xl shadow-2xl w-full h-64 object-cover" alt="Black glitter gradient">
+                <img src="https://styledmood.com/wp-content/uploads/2025/12/1-34.webp" class="rounded-3xl shadow-2xl w-full h-64 object-cover" alt="Black textured nails">
+                <img src="https://styledmood.com/wp-content/uploads/2025/12/2-33-1024x683.webp" class="rounded-3xl shadow-2xl w-full h-64 object-cover" alt="Black glossy glamour">
+                <img src="https://thumbs.dreamstime.com/b/elegant-black-silver-manicure-close-up-shot-woman-s-hands-stylish-nails-painted-glossy-polish-half-moon-421655504.jpg" class="rounded-3xl shadow-2xl w-full h-64 object-cover" alt="Black silver manicure">
+                <img src="https://cdn2.stylecraze.com/wp-content/uploads/2024/02/Black-And-Pastel-Ombre-Nail-Design.jpg.webp" class="rounded-3xl shadow-2xl w-full h-64 object-cover" alt="Black ombre luxury">
+            </div>
+        </div>
+    </section>
+
+    <!-- Форма записи -->
+    <section id="booking" class="py-20 bg-black/40">
+        <div class="max-w-2xl mx-auto px-6">
+            <h2 class="logo-font text-5xl font-bold text-center mb-3">Записаться</h2>
+            <p class="text-center text-zinc-400 mb-10">Заполни форму — данные сразу придут мне в Telegram</p>
+
+            <form id="bookingForm" class="bg-[#1a1a1a] rounded-3xl p-8 shadow-2xl border border-zinc-800 space-y-6">
+                <div>
+                    <label class="block text-sm text-zinc-400 mb-2">Имя</label>
+                    <input required id="name" type="text" placeholder="Как тебя зовут?" class="w-full px-6 py-5 bg-zinc-900 border border-zinc-700 rounded-2xl text-white text-lg">
+                </div>
+
+                <div>
+                    <label class="block text-sm text-zinc-400 mb-2">Телефон</label>
+                    <input required id="phone" type="tel" placeholder="+7 9XX XXX-XX-XX" class="w-full px-6 py-5 bg-zinc-900 border border-zinc-700 rounded-2xl text-white text-lg">
+                </div>
+
+                <div>
+                    <label class="block text-sm text-zinc-400 mb-2">Услуга</label>
+                    <select id="service" class="w-full px-6 py-5 bg-zinc-900 border border-zinc-700 rounded-2xl text-white text-lg">
+                        <option>Маникюр + гель-лак — 1400 ₽</option>
+                        <option>Наращивание гелем — 2800 ₽</option>
+                        <option>Педикюр + гель-лак — 1700 ₽</option>
+                        <option>Сложный дизайн — от 400 ₽</option>
+                        <option>Снятие + новый маникюр — 1800 ₽</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm text-zinc-400 mb-2">Дата</label>
+                        <input required id="date" type="date" class="w-full px-6 py-5 bg-zinc-900 border border-zinc-700 rounded-2xl text-white">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-zinc-400 mb-2">Время</label>
+                        <select id="time" class="w-full px-6 py-5 bg-zinc-900 border border-zinc-700 rounded-2xl text-white text-lg">
+                            <option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option>
+                            <option>12:00</option><option>12:30</option><option>13:00</option><option>13:30</option>
+                            <option>14:00</option><option>14:30</option><option>15:00</option><option>15:30</option>
+                            <option>16:00</option><option>16:30</option><option>17:00</option><option>17:30</option>
+                            <option>18:00</option><option>18:30</option><option>19:00</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm text-zinc-400 mb-2">Комментарий / пожелания</label>
+                    <textarea id="comment" rows="4" placeholder="Хочу чёрный матовый + золотые акценты..." class="w-full px-6 py-5 bg-zinc-900 border border-zinc-700 rounded-2xl text-white resize-none"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-700 hover:to-rose-600 text-white font-semibold text-xl py-6 rounded-3xl shadow-xl transition-all">
+                    Отправить заявку
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Отмена -->
+    <section class="py-16">
+        <div class="max-w-md mx-auto px-6 text-center">
+            <h2 class="logo-font text-4xl font-bold mb-6">Отменить запись</h2>
+            <p class="text-zinc-400 mb-8">Введи номер телефона</p>
+            <input id="cancelPhone" type="tel" placeholder="+7 ..." class="w-full px-8 py-6 bg-zinc-900 border border-zinc-700 rounded-3xl text-white text-lg mb-6">
+            <button onclick="cancel()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-white py-6 rounded-3xl font-semibold text-lg transition">
+                Отменить
+            </button>
+        </div>
+    </section>
+
+    <script>
+        const WORKER_URL = "https://rough-poetry-89a4.rdkltt8.workers.dev/";   // ← замени обязательно
+
+        document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            btn.disabled = true;
+            btn.textContent = 'Отправка...';
+
+            const formData = new FormData();
+            formData.append('type', 'book');
+            formData.append('name', document.getElementById('name').value);
+            formData.append('phone', document.getElementById('phone').value);
+            formData.append('service', document.getElementById('service').value);
+            formData.append('date', document.getElementById('date').value);
+            formData.append('time', document.getElementById('time').value);
+            formData.append('comment', document.getElementById('comment').value || '—');
+
+            try {
+                const res = await fetch(WORKER_URL, { method: 'POST', body: formData });
+                if (res.ok) {
+                    alert('Запись отправлена! Анжела свяжется с тобой в ближайшее время ❤️');
+                    e.target.reset();
+                } else {
+                    alert('Ошибка. Позвони: +7 949 837-01-46');
+                }
+            } catch {
+                alert('Нет связи. Позвони пожалуйста');
+            }
+            btn.disabled = false;
+            btn.textContent = 'Отправить заявку';
+        });
+
+        async function cancel() {
+            const phone = document.getElementById('cancelPhone').value.trim();
+            if (!phone) return alert('Введи номер телефона');
+
+            const formData = new FormData();
+            formData.append('type', 'cancel');
+            formData.append('phone', phone);
+
+            try {
+                const res = await fetch(WORKER_URL, { method: 'POST', body: formData });
+                if (res.ok) {
+                    alert('Запись отменена. Анжела получила уведомление.');
+                    document.getElementById('cancelPhone').value = '';
+                }
+            } catch {
+                alert('Ошибка. Позвони: +7 949 837-01-46');
+            }
+        }
+
+        // Завтра по умолчанию
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        document.getElementById('date').value = tomorrow.toISOString().split('T')[0];
+    </script>
+</body>
+</html>
