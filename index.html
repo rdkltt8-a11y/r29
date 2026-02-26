@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>R29 TEAM — Інфраструктура Трафіку • Web3 Підхід</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background:#0B0F14;
+      color:#EAEAEA;
+      font-family:'Segoe UI', system-ui, sans-serif;
+      line-height:1.6;
+      overflow-x:hidden;
+    }
+    canvas {
+      position:fixed;
+      inset:0;
+      z-index:1;
+      pointer-events:none;
+      opacity:0.65;
+    }
+    header {
+      position:fixed;
+      top:0;
+      width:100%;
+      background:rgba(11,15,20,0.85);
+      backdrop-filter:blur(10px);
+      z-index:20;
+      padding:15px 0;
+      border-bottom:1px solid rgba(108,92,231,0.3);
+    }
+    nav {
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .logo {
+      font-size:1.8rem;
+      font-weight:bold;
+      color:#6C5CE7;
+      text-shadow:0 0 10px #6C5CE7;
+    }
+    .nav-links a {
+      color:#8A8F98;
+      margin-left:30px;
+      text-decoration:none;
+      font-weight:600;
+      transition:0.3s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color:#00F0FF;
+      text-shadow:0 0 10px #00F0FF;
+    }
+    .container {
+      position:relative;
+      z-index:10;
+      max-width:1200px;
+      margin:0 auto;
+      padding:120px 20px 80px;
+    }
+    section {
+      padding:100px 0;
+      min-height:60vh;
+    }
+    h1, h2 {
+      font-weight:900;
+      letter-spacing:-0.03em;
+      margin-bottom:1.2rem;
+    }
+    h1 { font-size:clamp(4.5rem, 12vw, 10rem); }
+    h2 { font-size:clamp(2.8rem, 7vw, 5rem); }
+    .accent { color:#6C5CE7; }
+    .neon-btn {
+      padding:16px 40px;
+      font-size:1.3rem;
+      font-weight:bold;
+      background:transparent;
+      border:1px solid #6C5CE7;
+      color:#EAEAEA;
+      border-radius:8px;
+      cursor:pointer;
+      transition:all 0.4s ease;
+      box-shadow:0 0 18px rgba(108,92,231,0.4);
+    }
+    .neon-btn:hover {
+      box-shadow:0 0 40px #6C5CE7, 0 0 70px #00F0FF;
+      border-color:#00F0FF;
+    }
+    .card-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+      gap:30px;
+      margin-top:50px;
+    }
+    .card {
+      background:rgba(17,22,29,0.65);
+      border:1px solid rgba(108,92,231,0.3);
+      border-radius:8px;
+      padding:30px;
+      transition:all 0.4s ease;
+      backdrop-filter:blur(6px);
+    }
+    .card:hover {
+      transform:translateY(-8px);
+      box-shadow:0 0 35px rgba(108,92,231,0.5);
+    }
+    .steps {
+      list-style:none;
+      margin-top:40px;
+    }
+    .steps li {
+      position:relative;
+      padding-left:60px;
+      margin-bottom:40px;
+      font-size:1.3rem;
+    }
+    .steps li::before {
+      content:attr(data-step);
+      position:absolute;
+      left:0;
+      top:0;
+      width:40px;
+      height:40px;
+      background:#6C5CE7;
+      color:#0B0F14;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+    }
+    .fade-up {
+      opacity:0;
+      transform:translateY(50px);
+      transition:all 0.8s ease-out;
+    }
+    .fade-up.visible {
+      opacity:1;
+      transform:translateY(0);
+    }
+    footer {
+      text-align:center;
+      padding:60px 0 30px;
+      border-top:1px solid rgba(108,92,231,0.2);
+      color:#8A8F98;
+    }
+    @media (max-width:768px) {
+      nav { flex-direction:column; gap:15px; }
+      .nav-links a { margin:0 15px; }
+      section { padding:60px 0; }
+      .card-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="network"></canvas>
+
+<header>
+  <nav>
+    <div class="logo">R29 TEAM</div>
+    <div class="nav-links">
+      <a href="#home" class="active">Головна</a>
+      <a href="#accounts">Акаунти</a>
+      <a href="#creatives">Креативи</a>
+      <a href="#landings">Лендінги</a>
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+
+  <!-- Головна сторінка -->
+  <section id="home">
+    <div class="fade-up" style="text-align:center; min-height:80vh; display:flex; flex-direction:column; justify-content:center;">
+      <h1 class="accent">R29 TEAM</h1>
+      <div style="font-size:2.2rem; margin:20px 0; color:#8A8F98;">
+        Інфраструктура трафіку • Web3 Підхід • З 2023
+      </div>
+      <p style="font-size:1.8rem; max-width:900px; margin:0 auto 40px;">
+        Будуй. Запускай. Масштабуй.
+      </p>
+      <p style="font-size:1.4rem; max-width:800px; margin:0 auto 50px;">
+        Створюємо інфраструктуру трафіку для цифрових проєктів.<br>
+        White & Grey ніші. Facebook Ads • Nutra • Gambling • Стартапи
+      </p>
+      <div style="display:flex; gap:30px; justify-content:center; flex-wrap:wrap;">
+        <button class="neon-btn">Почати проєкт</button>
+        <button class="neon-btn">Отримати консультацію</button>
+      </div>
+    </div>
+
+    <!-- Who We Are -->
+    <div class="fade-up">
+      <h2 class="accent">Хто ми</h2>
+      <p>R29 TEAM — digital-команда, орієнтована на трафік, працює з 2023 року.</p>
+      <p>Допомагаємо:</p>
+      <ul>
+        <li>— запускати проєкти</li>
+        <li>— будувати рекламні системи</li>
+        <li>— масштабувати paid traffic</li>
+        <li>— навчати новачків</li>
+      </ul>
+      <p>Поєднуємо стратегію, тестування та інфраструктуру.</p>
+      <p style="font-style:italic;">Без хаосу. Тільки система.</p>
+    </div>
+
+    <!-- What We Do -->
+    <div class="fade-up">
+      <h2 class="accent">Що ми робимо</h2>
+      <div class="card-grid">
+        <div class="card">Налаштування Paid Traffic<br>Повний запуск та оптимізація Facebook Ads.</div>
+        <div class="card">Лендінги<br>Висококонверсійні односторінкові воронки під платний трафік.</div>
+        <div class="card">Виробництво креативів<br>Статика, відео, UGC. Швидке тестування гіпотез.</div>
+        <div class="card">Інфраструктура акаунтів<br>Підготовка, прогрів, управління ризиками.</div>
+        <div class="card">Навчання трафіку<br>Вчимо структурованому запуску реклами для новачків.</div>
+        <div class="card">Запуск та масштабування проєктів<br>Від ідеї до стабільного потоку трафіку.</div>
+      </div>
+    </div>
+
+    <!-- Process -->
+    <div class="fade-up">
+      <h2 class="accent">Процес</h2>
+      <ol class="steps">
+        <li data-step="1">Аналіз ніші</li>
+        <li data-step="2">Побудова стратегії</li>
+        <li data-step="3">Налаштування інфраструктури</li>
+        <li data-step="4">Фаза тестування</li>
+        <li data-step="5">Оптимізація</li>
+        <li data-step="6">Масштабування</li>
+      </ol>
+      <p style="font-size:1.4rem; margin-top:60px; font-style:italic; text-align:center;">
+        Ми не продаємо «легкі гроші».<br>Ми будуємо системи.
+      </p>
+    </div>
+
+    <!-- CTA -->
+    <div class="fade-up" style="text-align:center; margin-top:80px;">
+      <h2 class="accent">Готові запускати?</h2>
+      <p style="font-size:1.6rem; max-width:700px; margin:0 auto 40px;">Давай побудуємо твою систему трафіку.</p>
+      <button class="neon-btn" style="font-size:1.6rem; padding:20px 60px;">Зв’язатися з R29 TEAM</button>
+    </div>
+  </section>
+
+  <!-- Вкладка: Продаж акаунтів -->
+  <section id="accounts" style="display:none;">
+    <div class="fade-up">
+      <h2 class="accent">Продаж акаунтів</h2>
+      <p>Пропонуємо перевірені, прогріті та готові до масштабування Facebook-акаунти.</p>
+      <ul>
+        <li>Фарм 3–12 місяців</li>
+        <li>З історією активності</li>
+        <li>Різні гео та траст-рівні</li>
+        <li>Повний пакет: cookie, user-agent, проксі (опціонально)</li>
+      </ul>
+      <p style="margin-top:40px;">Ціни від 50$ до 500$ залежно від трасту та віку.</p>
+      <button class="neon-btn" style="margin-top:30px;">Замовити акаунт</button>
+    </div>
+  </section>
+
+  <!-- Вкладка: Креативи -->
+  <section id="creatives" style="display:none;">
+    <div class="fade-up">
+      <h2 class="accent">Креативи</h2>
+      <p>Створюємо ефективні креативи під будь-яку нішу: Nutra, Gambling, E-com, Sweepstakes.</p>
+      <ul>
+        <li>Статика (банери, пости)</li>
+        <li>Відео (15–60 сек)</li>
+        <li>UGC-стиль</li>
+        <li>Швидке A/B-тестування</li>
+        <li>Пакети: 10–50 креативів</li>
+      </ul>
+      <p style="margin-top:40px;">Термін: від 2 днів. Ціна за пакет від 150$.</p>
+      <button class="neon-btn" style="margin-top:30px;">Замовити креативи</button>
+    </div>
+  </section>
+
+  <!-- Вкладка: Лендінги -->
+  <section id="landings" style="display:none;">
+    <div class="fade-up">
+      <h2 class="accent">Лендінги</h2>
+      <p>Розробляємо висококонверсійні односторінкові сайти, заточені саме під платний трафік.</p>
+      <ul>
+        <li>Мобайл-фокус (90%+ трафіку)</li>
+        <li>Швидке завантаження (<1.5s)</li>
+        <li>Клоакінг-ready структура</li>
+        <li>Інтеграція пікселів, форм, кнопок</li>
+        <li>Термін: 3–7 днів</li>
+      </ul>
+      <p style="margin-top:40px;">Ціна від 300$ (простий) до 1200$ (преміум з анімаціями).</p>
+      <button class="neon-btn" style="margin-top:30px;">Замовити лендінг</button>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  R29 TEAM © 2023–2026 • Ukraine • All rights reserved
+</footer>
+
+<script>
+// Просте перемикання вкладок (без роутера, для демо)
+const links = document.querySelectorAll('.nav-links a');
+const sections = document.querySelectorAll('section');
+
+links.forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const targetId = link.getAttribute('href').substring(1);
+
+    links.forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+
+    sections.forEach(sec => {
+      sec.style.display = (sec.id === targetId) ? 'block' : 'none';
+    });
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+// Початково показуємо головну
+document.getElementById('home').style.display = 'block';
+
+// Canvas паутина (з попередньої версії, яскрава)
+const canvas = document.getElementById('network');
+const ctx = canvas.getContext('2d');
+let w, h, nodes = [], mouse = {x:null,y:null};
+
+function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;nodes=[];const c=Math.floor(w*h/30000);for(let i=0;i<c;i++){nodes.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-0.5)*0.15,vy:(Math.random()-0.5)*0.15,r:1.8,pulse:Math.random()*Math.PI*2})}}
+function draw(){ctx.clearRect(0,0,w,h);const t=Date.now()*0.001;nodes.forEach(n=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>w)n.vx*=-1;if(n.y<0||n.y>h)n.vy*=-1;if(mouse.x!==null){const dx=mouse.x-n.x,dy=mouse.y-n.y,d=Math.hypot(dx,dy);if(d<220){n.x+=dx/d*0.18;n.y+=dy/d*0.18}}const s=n.r+Math.sin(t+n.pulse)*0.6;ctx.beginPath();ctx.arc(n.x,n.y,s,0,Math.PI*2);ctx.fillStyle='#6C5CE7';ctx.shadowBlur=15;ctx.shadowColor='#6C5CE7';ctx.fill()});for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){let dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.hypot(dx,dy);if(d<220){ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);ctx.strokeStyle=`rgba(0,240,255,${0.25-d/2200})`;ctx.lineWidth=0.8;ctx.stroke()}}requestAnimationFrame(draw)}
+window.addEventListener('resize',resize);document.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY});resize();draw();
+
+// Fade-up
+const obs = new IntersectionObserver(e=>e.forEach(en=>{if(en.isIntersecting)en.target.classList.add('visible')}),{threshold:0.1});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
