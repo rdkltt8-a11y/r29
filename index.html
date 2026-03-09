@@ -1,214 +1,661 @@
+
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Анжела • Маникюр Мариуполь</title>
+    <title>MKM Doc • Терміновий переклад документів</title>
+    <link rel="icon" href="favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap');
+        
         :root {
-            --bg: #0f0f0f;
-            --card: #1a1a1a;
-            --rose: #e11d48;
-            --text: #e5e5e5;
-            --muted: #a1a1aa;
+            --primary: #0066cc;
         }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
         body {
-            background: var(--bg);
-            color: var(--text);
             font-family: 'Inter', system-ui, sans-serif;
         }
-        .logo-font { font-family: 'Playfair Display', serif; }
-        .hero-bg {
-            background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.9)),
-                        url('https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover no-repeat fixed;
+        
+        .logo-font {
+            font-family: 'Playfair Display', serif;
         }
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: var(--rose);
-            box-shadow: 0 0 0 3px rgba(225,29,72,0.2);
+        .hero-bg {
+            background: linear-gradient(rgba(0, 102, 204, 0.85), rgba(0, 51, 102, 0.85)), url('https://picsum.photos/id/1015/2000/1200') center/cover no-repeat;
+        }
+        
+        .service-card {
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 25px 50px -12px rgb(0 102 204 / 0.25);
+        }
+        .floating-btn {
+            animation: pulse 3s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(to right, #0066cc, #00cc99);
+            z-index: 50;
+            transition: width 0.1s;
+        }
+        .lang-pill {
+            transition: all 0.3s ease;
+        }
+        
+        .lang-pill:hover {
+            background-color: #0066cc;
+            color: white;
+            transform: scale(1.1);
+        }
+        /* Прелоадер */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        #preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loader {
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        .loader::before,
+        .loader::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: var(--primary);
+            animation: spin 1.2s linear infinite;
+        }
+        .loader::after {
+            animation-delay: -0.6s;
+            border-top-color: transparent;
+            border-left-color: var(--primary);
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+        /* Бегущая строка */
+        .ticker {
+            overflow: hidden;
+            white-space: nowrap;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .ticker-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: ticker 30s linear infinite;
+            color: white;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        .ticker-content span {
+            display: inline-block;
+            padding: 0 2rem;
+        }
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        /* Счётчики */
+        .counter {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
         }
     </style>
 </head>
-<body class="min-h-screen">
-
-    <!-- Навбар -->
-    <nav class="fixed top-0 w-full bg-black/80 backdrop-blur-xl z-50 border-b border-zinc-800">
-        <div class="max-w-6xl mx-auto px-5 py-5 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <span class="text-4xl">💅</span>
-                <span class="logo-font text-3xl font-bold text-rose-500">Анжела</span>
+<body class="text-gray-800 overflow-x-hidden">
+    <!-- Прелоадер -->
+    <div id="preloader">
+        <div class="text-center">
+            <div class="loader mx-auto mb-6"></div>
+            <div class="logo-font text-4xl font-bold text-[#0066cc]">MKM Doc</div>
+            <div class="text-gray-600 mt-2">Завантаження...</div>
+        </div>
+    </div>
+    <!-- Progress bar -->
+    <div id="progress-bar" class="scroll-progress w-0"></div>
+   <!-- NAVBAR -->
+<nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="index.html" class="flex items-center gap-3">
+            <img src="images/logo.png" alt="MKM Doc Logo" class="h-10 w-auto">
+            <div>
+                <span class="text-2xl font-bold tracking-tight logo-font text-[#0066cc]">MKM</span>
+                <span class="text-lg font-medium text-gray-600">Doc</span>
             </div>
-            <a href="tel:+79498370146" class="bg-rose-600 hover:bg-rose-700 text-white px-5 py-2.5 rounded-2xl font-medium flex items-center gap-2 text-sm shadow-md">
-                <i class="fa-solid fa-phone text-sm"></i> +7 949 837-01-46
+        </a>
+       
+        <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+            <a href="index.html#services" class="hover:text-[#0066cc] transition-colors">Послуги</a>
+            <a href="apostille.html" class="hover:text-[#0066cc] transition-colors">Апостиль</a>
+            <a href="visa.html" class="hover:text-[#0066cc] transition-colors">Візи</a>
+            <a href="index.html#contacts" class="hover:text-[#0066cc] transition-colors">Контакти</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <a href="https://t.me/Alisa_Elf17" target="_blank" class="flex items-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-6 py-3 rounded-2xl font-semibold text-sm transition-all shadow-md">
+                <i class="fab fa-telegram-plane text-xl"></i>
+                <span>Telegram</span>
             </a>
-        </div>
-    </nav>
-
-    <!-- Hero -->
-    <section class="hero-bg min-h-screen flex items-center pt-20">
-        <div class="max-w-5xl mx-auto px-6 text-center">
-            <div class="text-rose-400 text-sm tracking-widest mb-4">МАРИУПОЛЬ • ЧЕРЁМУШКИ</div>
-            <h1 class="logo-font text-5xl sm:text-6xl md:text-7xl font-bold leading-tight mb-6">
-                Премиум маникюр<br>в тёмном стиле
-            </h1>
-            <p class="text-xl md:text-2xl text-zinc-300 max-w-xl mx-auto mb-10">
-                Черный хром, матовые покрытия, золото и стразы — только премиум материалы
-            </p>
-            <a href="#booking" class="inline-block bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xl px-12 py-6 rounded-3xl shadow-2xl transition">
-                Записаться онлайн
-            </a>
-        </div>
-    </section>
-
-    <!-- Галерея -->
-    <section class="py-20">
-        <div class="max-w-6xl mx-auto px-6">
-            <h2 class="logo-font text-5xl font-bold text-center mb-12">Мои работы</h2>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-5">
-                <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="rounded-3xl shadow-2xl w-full h-64 object-cover" alt="Black elegance">
-                <img src="https://images.unsplash.com/photo-1610992015730-2449a6c7b7c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="rounded-3xl shadow-2xl w-full h-64 object-cover" alt="Black glitter">
-                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="rounded-3xl shadow-2xl w-full h-64 object-cover" alt="Chrome black">
-                <img src="https://picsum.photos/id/1015/800/800" class="rounded-3xl shadow-2xl w-full h-64 object-cover" alt="Strass black">
-                <img src="https://picsum.photos/id/201/800/800" class="rounded-3xl shadow-2xl w-full h-64 object-cover" alt="Matte black">
-                <img src="https://picsum.photos/id/251/800/800" class="rounded-3xl shadow-2xl w-full h-64 object-cover" alt="Gold black">
-            </div>
-        </div>
-    </section>
-
-    <!-- Форма записи -->
-    <section id="booking" class="py-20 bg-black/40">
-        <div class="max-w-2xl mx-auto px-6">
-            <h2 class="logo-font text-5xl font-bold text-center mb-3">Записаться</h2>
-            <p class="text-center text-zinc-400 mb-10">Данные сразу придут мне в Telegram</p>
-
-            <form id="bookingForm" class="bg-[#1a1a1a] rounded-3xl p-8 shadow-2xl border border-zinc-800 space-y-6">
-                <div>
-                    <label class="block text-sm text-zinc-400 mb-2">Имя</label>
-                    <input required name="name" type="text" placeholder="Как тебя зовут?" class="w-full px-6 py-5 bg-zinc-900 border border-zinc-700 rounded-2xl text-white text-lg">
-                </div>
-
-                <div>
-                    <label class="block text-sm text-zinc-400 mb-2">Телефон</label>
-                    <input required name="phone" type="tel" placeholder="+7 9XX XXX-XX-XX" class="w-full px-6 py-5 bg-zinc-900 border border-zinc-700 rounded-2xl text-white text-lg">
-                </div>
-
-                <div>
-                    <label class="block text-sm text-zinc-400 mb-2">Услуга</label>
-                    <select name="service" class="w-full px-6 py-5 bg-zinc-900 border border-zinc-700 rounded-2xl text-white text-lg">
-                        <option>Маникюр + гель-лак — 1400 ₽</option>
-                        <option>Наращивание гелем — 2800 ₽</option>
-                        <option>Педикюр + гель-лак — 1700 ₽</option>
-                        <option>Сложный дизайн — от 400 ₽</option>
-                        <option>Снятие + новый маникюр — 1800 ₽</option>
-                    </select>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm text-zinc-400 mb-2">Дата</label>
-                        <input required name="date" type="date" class="w-full px-6 py-5 bg-zinc-900 border border-zinc-700 rounded-2xl text-white">
-                    </div>
-                    <div>
-                        <label class="block text-sm text-zinc-400 mb-2">Время</label>
-                        <select name="time" class="w-full px-6 py-5 bg-zinc-900 border border-zinc-700 rounded-2xl text-white text-lg">
-                            <option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option>
-                            <option>12:00</option><option>12:30</option><option>13:00</option><option>13:30</option>
-                            <option>14:00</option><option>14:30</option><option>15:00</option><option>15:30</option>
-                            <option>16:00</option><option>16:30</option><option>17:00</option><option>17:30</option>
-                            <option>18:00</option><option>18:30</option><option>19:00</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-sm text-zinc-400 mb-2">Комментарий / пожелания</label>
-                    <textarea name="comment" rows="4" placeholder="Хочу чёрный матовый + золотые акценты..." class="w-full px-6 py-5 bg-zinc-900 border border-zinc-700 rounded-2xl text-white resize-none"></textarea>
-                </div>
-
-                <button type="submit" class="w-full bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-700 hover:to-rose-600 text-white font-semibold text-xl py-6 rounded-3xl shadow-xl transition-all">
-                    Отправить заявку
-                </button>
-            </form>
-        </div>
-    </section>
-
-    <!-- Отмена записи -->
-    <section class="py-16">
-        <div class="max-w-md mx-auto px-6 text-center">
-            <h2 class="logo-font text-4xl font-bold mb-6">Отменить запись</h2>
-            <p class="text-zinc-400 mb-8">Введи номер телефона</p>
-            <input id="cancelPhone" type="tel" placeholder="+7 ..." class="w-full px-8 py-6 bg-zinc-900 border border-zinc-700 rounded-3xl text-white text-lg mb-6">
-            <button onclick="cancelBooking()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-white py-6 rounded-3xl font-semibold text-lg transition">
-                Отменить
+            <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden text-2xl text-gray-700">
+                <i class="fas fa-bars"></i>
             </button>
         </div>
+    </div>
+   
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t px-6 py-6">
+        <div class="flex flex-col gap-5 text-lg">
+            <a href="index.html" class="hover:text-[#0066cc]">Головна</a>
+            <a href="index.html#services" class="hover:text-[#0066cc]">Послуги</a>
+            <a href="#apostille" class="hover:text-[#0066cc]">Апостиль та легалізація</a>
+            <a href="visa.html" class="hover:text-[#0066cc]">Візи та міграція</a>
+            <a href="#contacts" class="hover:text-[#0066cc]">Контакти</a>
+        </div>
+    </div>
+</nav>
+    <!-- HERO -->
+    <header class="hero-bg min-h-screen flex flex-col justify-center text-white relative">
+        <div class="max-w-5xl mx-auto px-6 text-center py-12">
+            <div data-aos="fade-up" class="max-w-3xl mx-auto">
+                <div class="inline-flex items-center gap-3 bg-white/20 backdrop-blur-md px-6 py-2 rounded-3xl mb-8">
+                    <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                    <span class="font-medium tracking-widest text-sm">ПРАЦЮЄМО ЩОДЕННО • ДИСТАНЦІЙНО</span>
+                </div>
+               
+                <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold leading-none tracking-tighter logo-font mb-6">
+                    ТЕРМІНОВИЙ ПЕРЕКЛАД<br>ДОКУМЕНТІВ
+                </h1>
+                <p class="text-2xl md:text-3xl font-light mb-10 text-white/90">
+                    Понад <span class="font-semibold text-white">65 мов</span> 🌍<br>
+                    Професійно • Швидко • Дистанційно
+                </p>
+                <ul class="text-lg md:text-xl mb-10 space-y-2 max-w-3xl mx-auto">
+                    <li>✔ Переклад документів</li>
+                    <li>✔ Нотаріальне засвідчення</li>
+                    <li>✔ Апостиль та легалізація</li>
+                    <li>✔ Відновлення документів</li>
+                    <li>✔ Юридичні консультації</li>
+                    <li>✔ Оформлення віз та міграційних документів</li>
+                </ul>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="https://t.me/Alisa_Elf17" target="_blank"
+                       class="group bg-white text-[#0066cc] hover:bg-[#00cc99] hover:text-white font-semibold text-xl px-10 py-6 rounded-3xl flex items-center gap-4 transition-all duration-300 shadow-2xl">
+                        <i class="fas fa-paper-plane text-3xl group-active:rotate-12 transition"></i>
+                        <div>
+                            <div class="text-base font-medium">Надіслати документ</div>
+                            <div class="text-sm opacity-70">Оцінка вартості за 5 хв</div>
+                        </div>
+                    </a>
+                   
+                    <a href="https://t.me/Alisa_Elf17" target="_blank"
+                       class="flex items-center gap-3 border-2 border-white/80 hover:border-white text-white hover:bg-white/10 font-medium px-8 py-6 rounded-3xl transition-all">
+                        <i class="fab fa-telegram-plane text-4xl"></i>
+                        <span class="text-left">
+                            <span class="block text-sm">Пишіть у Telegram</span>
+                            <span class="font-semibold">@Alisa_Elf17</span>
+                        </span>
+                    </a>
+                </div>
+               
+                <div class="mt-12 text-sm flex justify-center gap-8 opacity-75">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-check"></i>
+                        <span>Нотаріус</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-check"></i>
+                        <span>Апостиль</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-check"></i>
+                        <span>Доставка по світу</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Бегуща строка -->
+        <div class="ticker absolute bottom-0 left-0 right-0 py-3">
+            <div class="ticker-content">
+                <span>Акредитовані перекладачі</span>
+                <span>• 65 мов світу</span>
+                <span>• Нотаріальне засвідчення</span>
+                <span>• Доставка</span>
+                <span>• Нотаріус</span>
+                <span>• Апостиль</span>
+                <span>• Доставка по світу</span>
+                <span>Акредитовані перекладачі</span>
+                <span>• 65 мов світу</span>
+                <span>• Нотаріальне засвідчення</span>
+                <span>• Доставка</span>
+                <span>• Нотаріус</span>
+                <span>• Апостиль</span>
+                <span>• Доставка по світу</span>
+            </div>
+        </div>
+        <!-- Плаваючий "Гортайте вниз" -->
+        <div id="scroll-indicator" class="fixed bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/80 text-xs tracking-widest z-40 transition-opacity duration-500 opacity-100 pointer-events-none">
+            <div class="animate-bounce text-3xl">↓</div>
+            <span>Гортайте вниз</span>
+        </div>
+    </header>
+    <!-- QUICK CTA BAR -->
+    <div class="bg-[#0066cc] py-4 text-white">
+        <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="font-medium text-center md:text-left">
+                Надішліть документ — отримайте розрахунок за 5 хвилин
+            </div>
+            <a href="https://t.me/Alisa_Elf17" target="_blank"
+               class="flex items-center gap-3 bg-white text-[#0066cc] hover:bg-amber-300 px-8 py-4 rounded-2xl font-semibold shadow-inner transition-all">
+                <i class="fab fa-telegram-plane"></i>
+                <span>Писати в Telegram @Alisa_Elf17</span>
+            </a>
+        </div>
+    </div>
+    <!-- SERVICES GRID -->
+    <section id="services" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-[#0066cc] font-semibold tracking-widest text-sm">НАШІ ПОСЛУГИ</span>
+                <h2 class="text-5xl font-bold logo-font mt-3">Що ми робимо для вас</h2>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div data-aos="fade-up" data-aos-delay="100" class="service-card bg-white border border-gray-100 rounded-3xl p-8 cursor-pointer group">
+                    <div class="w-14 h-14 bg-blue-100 text-[#0066cc] rounded-2xl flex items-center justify-center text-4xl mb-6 group-hover:rotate-12 transition">🌍</div>
+                    <h3 class="text-2xl font-semibold mb-3">Переклад документів</h3>
+                    <p class="text-gray-600">65+ мов. Присяжні та акредитовані перекладачі. Нотаріус і печатка бюро.</p>
+                    <a href="translation.html" class="mt-8 text-[#0066cc] font-medium flex items-center gap-2 group-hover:gap-4 transition-all">
+                        Детальніше <span class="text-xl">→</span>
+                    </a>
+                </div>
+                <!-- Card 2 -->
+                <div data-aos="fade-up" data-aos-delay="200" id="apostille" class="service-card bg-white border border-gray-100 rounded-3xl p-8 cursor-pointer group">
+                    <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-4xl mb-6 group-hover:rotate-12 transition">📜</div>
+                    <h3 class="text-2xl font-semibold mb-3">Апостиль та легалізація</h3>
+                    <p class="text-gray-600">Мін’юст, МОН, МЗС, посольства. Повний цикл легалізації документів.</p>
+                    <a href="apostille.html" class="mt-8 text-[#0066cc] font-medium flex items-center gap-2 group-hover:gap-4 transition-all">
+                        Детальніше <span class="text-xl">→</span>
+                    </a>
+                </div>
+                <!-- Card 3 -->
+                <div data-aos="fade-up" data-aos-delay="300" id="visa" class="service-card bg-white border border-gray-100 rounded-3xl p-8 cursor-pointer group">
+                    <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center text-4xl mb-6 group-hover:rotate-12 transition">✈️</div>
+                    <h3 class="text-2xl font-semibold mb-3">Візи та міграція</h3>
+                    <p class="text-gray-600">Консультації, оформлення віз, посвідок на проживання, громадянства.</p>
+                    <a href="visa.html" class="mt-8 text-[#0066cc] font-medium flex items-center gap-2 group-hover:gap-4 transition-all">
+                        Детальніше <span class="text-xl">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </section>
-
+    <!-- TRANSLATION SECTION -->
+    <section id="translation-section" class="py-24 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-12 gap-16 items-center">
+                <div class="md:col-span-7" data-aos="fade-right">
+                    <h2 class="text-4xl font-bold logo-font leading-none mb-8">Переклад документів будь-якої складності</h2>
+                    <p class="text-xl text-gray-600 mb-10">Працюємо з дипломами, свідоцтвами, паспортами, контрактами, медичними довідками та іншими документами.</p>
+                   
+                    <div class="mb-10">
+                        <div class="text-sm font-semibold text-[#0066cc] mb-4">Мови перекладу:</div>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="lang-pill px-5 py-2 bg-white border rounded-3xl text-sm">Англійська</span>
+                            <span class="lang-pill px-5 py-2 bg-white border rounded-3xl text-sm">Німецька</span>
+                            <span class="lang-pill px-5 py-2 bg-white border rounded-3xl text-sm">Французька</span>
+                            <span class="lang-pill px-5 py-2 bg-white border rounded-3xl text-sm">Іспанська</span>
+                            <span class="lang-pill px-5 py-2 bg-white border rounded-3xl text-sm">Італійська</span>
+                            <span class="lang-pill px-5 py-2 bg-white border rounded-3xl text-sm">Чеська</span>
+                            <span class="lang-pill px-5 py-2 bg-white border rounded-3xl text-sm">Португальська</span>
+                            <span class="lang-pill px-5 py-2 bg-white border rounded-3xl text-sm">+ 58 інших</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-8 text-sm">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+                            <div>
+                                <div class="font-medium">Нотаріальне засвідчення</div>
+                                <div class="text-xs text-gray-500">За потреби</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+                            <div>
+                                <div class="font-medium">Печатка бюро</div>
+                                <div class="text-xs text-gray-500">Безкоштовно</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:col-span-5" data-aos="fade-left">
+                    <div class="bg-white rounded-3xl shadow-xl p-8">
+                        <div onclick="window.open('https://t.me/Alisa_Elf17','_blank')"
+                             class="bg-gradient-to-r from-[#0066cc] to-[#00cc99] text-white p-8 rounded-3xl cursor-pointer hover:scale-105 transition flex flex-col items-center text-center">
+                            <i class="fas fa-file-upload text-6xl mb-6 opacity-80"></i>
+                            <div class="text-2xl font-semibold mb-2">Надіслати документ</div>
+                            <div class="text-sm opacity-80">Отримайте точну ціну та термін за 5 хвилин</div>
+                            <div class="mt-8 text-xs bg-white/20 w-fit mx-auto px-6 py-3 rounded-3xl">Просто перетягніть файл у чат Telegram</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- APOSTILLE SECTION -->
+    <section id="apostille" class="py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16">
+                <div data-aos="fade-up">
+                    <span class="bg-amber-100 text-amber-700 text-xs font-bold px-5 py-2 rounded-3xl">ОФІЦІЙНЕ ЗАВІРЕННЯ</span>
+                    <h2 class="text-4xl font-bold logo-font mt-6 leading-none">Апостиль та легалізація документів</h2>
+                    <ul class="mt-10 space-y-6 text-lg">
+                        <li class="flex gap-4"><span class="text-3xl text-emerald-500">01</span> Міністерство юстиції</li>
+                        <li class="flex gap-4"><span class="text-3xl text-emerald-500">02</span> Міністерство освіти</li>
+                        <li class="flex gap-4"><span class="text-3xl text-emerald-500">03</span> Міністерство закордонних справ</li>
+                        <li class="flex gap-4"><span class="text-3xl text-emerald-500">04</span> Посольства та консульства</li>
+                    </ul>
+                    <a href="https://t.me/Alisa_Elf17" target="_blank"
+                       class="mt-12 inline-flex items-center gap-4 bg-black text-white px-8 py-6 rounded-3xl text-xl font-medium">
+                        Оформити апостиль зараз
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div data-aos="fade-up" class="bg-gray-50 rounded-3xl p-10 flex items-center">
+                    <div class="text-center">
+                        <div class="text-7xl mb-6">📍</div>
+                        <p class="text-2xl font-light">Виконуємо повний цикл легалізації за один раз. Без черг та зайвих поїздок.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- RECOVERY + VISA -->
+    <section id="visa" class="py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-20">
+                <div data-aos="fade-right">
+                    <h2 class="text-4xl font-bold logo-font">Відновлення та оформлення документів</h2>
+                    <div class="mt-8 space-y-6">
+                        <div class="flex gap-6 bg-white p-6 rounded-3xl">
+                            <span class="text-4xl">🎓</span>
+                            <div>
+                                <div class="font-semibold">Дипломи, свідоцтва, атестати</div>
+                                <div class="text-sm text-gray-500">Дублікати з архівів</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-6 bg-white p-6 rounded-3xl">
+                            <span class="text-4xl">🛡️</span>
+                            <div>
+                                <div class="font-semibold">Довідка про несудимість, банкрутство, корупцію</div>
+                                <div class="text-sm text-gray-500">ЄДР, витяги</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div data-aos="fade-left">
+                    <h2 class="text-4xl font-bold logo-font">Візова та міграційна підтримка</h2>
+                    <p class="mt-8 text-xl text-gray-600">Консультації • Формування повного пакету • Оформлення віз, посвідок, громадянства.</p>
+                   
+                    <div class="mt-12 flex flex-wrap gap-4">
+                        <div onclick="window.open('https://t.me/Alisa_Elf17','_blank')"
+                             class="cursor-pointer flex-1 min-w-[220px] bg-white border-2 border-dashed border-gray-300 hover:border-[#0066cc] rounded-3xl p-6 text-center transition">
+                            <i class="fas fa-passport text-4xl text-[#0066cc] mb-4"></i>
+                            <div class="font-semibold">Візи</div>
+                        </div>
+                        <div onclick="window.open('https://t.me/Alisa_Elf17','_blank')"
+                             class="cursor-pointer flex-1 min-w-[220px] bg-white border-2 border-dashed border-gray-300 hover:border-[#0066cc] rounded-3xl p-6 text-center transition">
+                            <i class="fas fa-home text-4xl text-[#0066cc] mb-4"></i>
+                            <div class="font-semibold">Посвідка на проживання</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- INSURANCE + DISTANCE -->
+    <section class="py-20 bg-white border-t border-b">
+        <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12">
+            <div data-aos="zoom-in" class="bg-gradient-to-br from-blue-50 to-white p-10 rounded-3xl">
+                <div class="text-5xl mb-6">🛡️</div>
+                <h3 class="text-3xl font-bold">Страхування</h3>
+                <p class="mt-6 text-lg">Для громадян України та іноземців. Медичне, туристичне, міграційне страхування.</p>
+                <a href="https://t.me/Alisa_Elf17" target="_blank" class="mt-8 block text-[#0066cc] font-medium">Замовити страховку →</a>
+            </div>
+           
+            <div data-aos="zoom-in" class="bg-gradient-to-br from-emerald-50 to-white p-10 rounded-3xl">
+                <div class="text-5xl mb-6">📍</div>
+                <h3 class="text-3xl font-bold">Дистанційна робота по всьому світу</h3>
+                <ul class="mt-8 space-y-4 text-lg">
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-500"></i> Термінові переклади 24/7</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-500"></i> Онлайн консультації</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-emerald-500"></i> Доставка Укрпошта • Нова Пошта • Кур’єр</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <!-- TRUST / REVIEWS -->
+    <section id="trust-section" class="py-24 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-[#0066cc] font-semibold tracking-widest text-sm">НАМ ДОВІРЯЮТЬ</span>
+                <h2 class="text-5xl font-bold logo-font mt-3">Що кажуть клієнти</h2>
+                <p class="text-gray-500 mt-4">Реальні відгуки клієнтів про нашу роботу</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-3xl shadow-lg" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex mb-4 text-amber-400 text-xl">★★★★★</div>
+                    <p class="text-gray-600 mb-6">
+                        Дуже швидкий переклад диплома та апостиль. Все зробили дистанційно, документи отримала через пошту. Рекомендую!
+                    </p>
+                    <div class="font-semibold">Олена</div>
+                    <div class="text-sm text-gray-400">Польща</div>
+                </div>
+                <div class="bg-white p-8 rounded-3xl shadow-lg" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex mb-4 text-amber-400 text-xl">★★★★★</div>
+                    <p class="text-gray-600 mb-6">
+                        Звертався для перекладу документів на німецьку. Все зробили дуже професійно і швидко. Ціна приємна.
+                    </p>
+                    <div class="font-semibold">Андрій</div>
+                    <div class="text-sm text-gray-400">Німеччина</div>
+                </div>
+                <div class="bg-white p-8 rounded-3xl shadow-lg" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex mb-4 text-amber-400 text-xl">★★★★★</div>
+                    <p class="text-gray-600 mb-6">
+                        Оформила апостиль і переклад свідоцтва про народження для Італії. Все зробили без поїздок, дуже зручно.
+                    </p>
+                    <div class="font-semibold">Марія</div>
+                    <div class="text-sm text-gray-400">Італія</div>
+                </div>
+            </div>
+            <!-- Анімовані счётчики -->
+            <div class="grid md:grid-cols-4 gap-8 mt-20 text-center">
+                <div data-aos="fade-up" data-aos-delay="400">
+                    <div class="counter text-5xl font-bold text-[#0066cc]" data-target="2000">0+</div>
+                    <div class="text-gray-500 mt-2">Перекладів документів</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="500">
+                    <div class="counter text-5xl font-bold text-[#0066cc]" data-target="65">0+</div>
+                    <div class="text-gray-500 mt-2">Мов світу</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="600">
+                    <div class="text-5xl font-bold text-[#0066cc]">24/7</div>
+                    <div class="text-gray-500 mt-2">Підтримка клієнтів</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="700">
+                    <div class="counter text-5xl font-bold text-[#0066cc]" data-target="100">0%</div>
+                    <div class="text-gray-500 mt-2">Конфіденційність</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- FINAL CTA -->
+    <div class="bg-gradient-to-r from-[#0066cc] to-[#00cc99] py-20 text-white">
+        <div class="max-w-4xl mx-auto text-center px-6">
+            <h2 class="text-5xl font-bold logo-font">Готові розпочати?</h2>
+            <p class="text-2xl mt-6 opacity-90">Надішліть свій документ у Telegram — і ми відразу скажемо ціну та термін</p>
+           
+            <a href="https://t.me/Alisa_Elf17" target="_blank"
+               class="mt-12 mx-auto flex w-fit items-center gap-6 bg-white text-[#0066cc] hover:scale-110 transition-all shadow-2xl rounded-3xl px-12 py-8 text-2xl font-semibold">
+                <i class="fab fa-telegram-plane text-5xl"></i>
+                <div>
+                    Писати @Alisa_Elf17
+                    <div class="text-xs tracking-widest opacity-60 mt-1">відкриється чат</div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <!-- CONTACTS -->
+    <section id="contacts" class="py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16">
+                <div data-aos="fade-up">
+                    <h2 class="text-4xl font-bold logo-font">Зв'яжіться з нами</h2>
+                    <div class="mt-12 space-y-8">
+                        <div>
+                            <div class="text-xs uppercase tracking-widest text-gray-500">Email</div>
+                            <a href="mailto:Alisa.plavelskaya@gmail.com" class="text-2xl hover:text-[#0066cc] break-all">Alisa.plavelskaya@gmail.com</a>
+                        </div>
+                        <div>
+                            <div class="text-xs uppercase tracking-widest text-gray-500">Viber / WhatsApp</div>
+                            <a href="tel:+380000000056" class="text-2xl hover:text-[#0066cc]">+38 XXX XXX XX 56</a>
+                        </div>
+                        <div>
+                            <div class="text-xs uppercase tracking-widest text-gray-500">Telegram</div>
+                            <a href="https://t.me/Alisa_Elf17" target="_blank" class="text-3xl font-semibold text-[#0088cc] hover:underline">@Alisa_Elf17</a>
+                        </div>
+                    </div>
+                </div>
+               
+                <div data-aos="fade-up" class="bg-gray-50 rounded-3xl p-10">
+                    <div class="text-sm font-medium mb-6">Працюємо щодня без вихідних</div>
+                    <div class="text-6xl font-light text-gray-300">24/7</div>
+                    <div class="mt-16 text-xs text-gray-500 leading-relaxed">
+                        Документи відправляємо по всьому світу<br>
+                        Термінові замовлення виконуємо того ж дня
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="flex justify-center gap-3 mb-6">
+                <div class="w-9 h-9 bg-white rounded-2xl flex items-center justify-center text-gray-900 text-3xl font-bold logo-font">M</div>
+            </div>
+            <p class="text-sm">© 2024 MKM Doc • Всі права захищено</p>
+            <p class="text-xs mt-2 opacity-50">Професійний переклад документів | Апостиль | Візи</p>
+        </div>
+    </footer>
+    <!-- FLOATING TELEGRAM BUTTON -->
+    <a href="https://t.me/Alisa_Elf17" target="_blank"
+       class="floating-btn fixed bottom-8 right-8 bg-[#0088cc] text-white w-16 h-16 rounded-3xl shadow-2xl flex items-center justify-center text-4xl z-50 hover:scale-110 transition-all border-4 border-white">
+        <i class="fab fa-telegram-plane"></i>
+    </a>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        const WORKER_URL = "https://rough-poetry-89a4.rdkltt8.workers.dev/";  // ←←← ЗАМЕНИТЬ ОБЯЗАТЕЛЬНО!
-
-        document.getElementById('bookingForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector('button[type="submit"]');
-            btn.disabled = true;
-            btn.textContent = 'Отправляем...';
-
-            const formData = new FormData(e.target);
-            formData.append('type', 'book');
-
-            try {
-                const res = await fetch(WORKER_URL, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const text = await res.text();
-
-                if (res.ok) {
-                    alert('Запись отправлена! Анжела свяжется с тобой в ближайшее время ❤️');
-                    e.target.reset();
+        // Прелоадер
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.classList.add('hidden');
+            }, 800); // затримка для краси
+        });
+        AOS.init({
+            duration: 900,
+            once: true,
+            offset: 100
+        });
+        // Progress bar + scroll indicator
+        window.addEventListener('scroll', () => {
+            // Progress bar
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+            // Scroll indicator
+            const hero = document.querySelector('header.hero-bg');
+            const indicator = document.getElementById('scroll-indicator');
+            if (hero && indicator) {
+                const heroBottom = hero.getBoundingClientRect().bottom;
+                const windowHeight = window.innerHeight;
+                if (heroBottom > windowHeight) {
+                    indicator.style.opacity = '1';
                 } else {
-                    alert(`Ошибка сервера (${res.status}): ${text || 'нет ответа'}\nПозвони: +7 949 837-01-46`);
+                    indicator.style.opacity = '0';
                 }
-            } catch (err) {
-                alert(`Нет связи с сервером: ${err.message}\nПозвони: +7 949 837-01-46`);
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Отправить заявку';
             }
         });
-
-        function cancelBooking() {
-            const phone = document.getElementById('cancelPhone').value.trim();
-            if (!phone) return alert('Введите номер телефона');
-
-            const formData = new FormData();
-            formData.append('type', 'cancel');
-            formData.append('phone', phone);
-
-            fetch(WORKER_URL, {
-                method: 'POST',
-                body: formData
-            })
-            .then(res => res.text())
-            .then(text => {
-                if (text.includes("success") || text === "ok") {
-                    alert('Запись отменена. Анжела получила уведомление.');
-                    document.getElementById('cancelPhone').value = '';
-                } else {
-                    alert('Ошибка отмены. Позвони: +7 949 837-01-46');
-                }
-            })
-            .catch(err => alert(`Нет связи: ${err.message}\nПозвони: +7 949 837-01-46`));
-        }
-
-        // Дата по умолчанию — завтра
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        document.getElementById('date').value = tomorrow.toISOString().split('T')[0];
+// Анімація лічильників (більш надійна версія)
+    const counters = document.querySelectorAll('.counter');
+    const speed = 150; // Швидкість росту (менше = швидше)
+    function animateValue(obj, start, end, duration) {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const value = Math.floor(progress * (end - start) + start);
+            obj.innerHTML = value + (obj.dataset.suffix || '+');
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                counters.forEach(counter => {
+                    const target = parseInt(counter.getAttribute('data-target'));
+                    const suffix = counter.innerHTML.includes('%') ? '%' : '+';
+                    counter.dataset.suffix = suffix;
+                    animateValue(counter, 0, target, 2000); // 2 секунди анімація
+                });
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 }); // Запускається, коли 30% блоку видно
+    const trustSection = document.getElementById('trust-section');
+    if (trustSection) observer.observe(trustSection);
+        // Закриття мобільного меню на ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") {
+                const menu = document.getElementById('mobile-menu');
+                if (!menu.classList.contains('hidden')) menu.classList.add('hidden');
+            }
+        });
     </script>
 </body>
 </html>

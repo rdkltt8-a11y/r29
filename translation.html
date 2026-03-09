@@ -1,0 +1,363 @@
+<!-- translation.html -->
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MKM Doc • Переклад документів</title>
+    <link rel="icon" href="favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap');
+        
+        :root {
+            --primary: #0066cc;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        
+        .logo-font {
+            font-family: 'Playfair Display', serif;
+        }
+        .hero-bg {
+            background: linear-gradient(rgba(0, 102, 204, 0.85), rgba(0, 51, 102, 0.85)), url('https://picsum.photos/id/1015/2000/1200') center/cover no-repeat;
+        }
+        
+        .service-card {
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 25px 50px -12px rgb(0 102 204 / 0.25);
+        }
+        .floating-btn {
+            animation: pulse 3s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(to right, #0066cc, #00cc99);
+            z-index: 50;
+            transition: width 0.1s;
+        }
+        .lang-pill {
+            transition: all 0.3s ease;
+        }
+        
+        .lang-pill:hover {
+            background-color: #0066cc;
+            color: white;
+            transform: scale(1.1);
+        }
+        /* Прелоадер */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        #preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loader {
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        .loader::before,
+        .loader::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: var(--primary);
+            animation: spin 1.2s linear infinite;
+        }
+        .loader::after {
+            animation-delay: -0.6s;
+            border-top-color: transparent;
+            border-left-color: var(--primary);
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+        /* Бегущая строка */
+        .ticker {
+            overflow: hidden;
+            white-space: nowrap;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .ticker-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: ticker 30s linear infinite;
+            color: white;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        .ticker-content span {
+            display: inline-block;
+            padding: 0 2rem;
+        }
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        /* Счётчики */
+        .counter {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body class="text-gray-800 overflow-x-hidden">
+    <!-- Прелоадер -->
+    <div id="preloader">
+        <div class="text-center">
+            <div class="loader mx-auto mb-6"></div>
+            <div class="logo-font text-4xl font-bold text-[#0066cc]">MKM Doc</div>
+            <div class="text-gray-600 mt-2">Завантаження...</div>
+        </div>
+    </div>
+    <!-- Progress bar -->
+    <div id="progress-bar" class="scroll-progress w-0"></div>
+    <!-- NAVBAR -->
+<nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="index.html" class="flex items-center gap-3">
+            <img src="images/logo.png" alt="MKM Doc Logo" class="h-10 w-auto">
+            <div>
+                <span class="text-2xl font-bold tracking-tight logo-font text-[#0066cc]">MKM</span>
+                <span class="text-lg font-medium text-gray-600">Doc</span>
+            </div>
+        </a>
+       
+        <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+            <a href="index.html#services" class="hover:text-[#0066cc] transition-colors">Послуги</a>
+            <a href="apostille.html" class="hover:text-[#0066cc] transition-colors">Апостиль</a>
+            <a href="visa.html" class="hover:text-[#0066cc] transition-colors">Візи</a>
+            <a href="index.html#contacts" class="hover:text-[#0066cc] transition-colors">Контакти</a>
+        </div>
+        <div class="flex items-center gap-4">
+            <a href="https://t.me/Alisa_Elf17" target="_blank" class="flex items-center gap-2 bg-[#0088cc] hover:bg-[#006699] text-white px-6 py-3 rounded-2xl font-semibold text-sm transition-all shadow-md">
+                <i class="fab fa-telegram-plane text-xl"></i>
+                <span>Telegram</span>
+            </a>
+            <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden text-2xl text-gray-700">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+   
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t px-6 py-6">
+        <div class="flex flex-col gap-5 text-lg">
+            <a href="index.html" class="hover:text-[#0066cc]">Головна</a>
+            <a href="index.html#services" class="hover:text-[#0066cc]">Послуги</a>
+            <a href="#apostille" class="hover:text-[#0066cc]">Апостиль та легалізація</a>
+            <a href="visa.html" class="hover:text-[#0066cc]">Візи та міграція</a>
+            <a href="#contacts" class="hover:text-[#0066cc]">Контакти</a>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+    <header class="hero-bg min-h-screen flex flex-col justify-center text-white relative">
+        <div class="max-w-5xl mx-auto px-6 text-center py-12">
+            <div data-aos="fade-up" class="max-w-3xl mx-auto">
+                <div class="inline-flex items-center gap-3 bg-white/20 backdrop-blur-md px-6 py-2 rounded-3xl mb-8">
+                    <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                    <span class="font-medium tracking-widest text-sm">ПРАЦЮЄМО ЩОДЕННО • ДИСТАНЦІЙНО</span>
+                </div>
+               
+                <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold leading-none tracking-tighter logo-font mb-6">
+                    ПЕРЕКЛАД ДОКУМЕНТІВ
+                </h1>
+                <p class="text-2xl md:text-3xl font-light mb-10 text-white/90">
+                    Понад <span class="font-semibold text-white">65 мов</span> 🌍<br>
+                    Професійно • Швидко • Дистанційно
+                </p>
+                <ul class="text-lg md:text-xl mb-10 space-y-2 max-w-3xl mx-auto">
+                    <li>✔ 65+ мов перекладу, включаючи англійську, німецьку, французьку та рідкісні мови</li>
+                    <li>✔ Присяжні та акредитовані перекладачі з досвідом у юридичних, медичних та технічних текстах</li>
+                    <li>✔ Нотаріальне засвідчення перекладів</li>
+                    <li>✔ Печатка бюро безкоштовно</li>
+                    <li>✔ Термінові переклади за 1-2 дні</li>
+                    <li>✔ Робота з дипломами, паспортами, контрактами, медичними довідками тощо</li>
+                </ul>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="https://t.me/Alisa_Elf17" target="_blank"
+                       class="group bg-white text-[#0066cc] hover:bg-[#00cc99] hover:text-white font-semibold text-xl px-10 py-6 rounded-3xl flex items-center gap-4 transition-all duration-300 shadow-2xl">
+                        <i class="fas fa-paper-plane text-3xl group-active:rotate-12 transition"></i>
+                        <div>
+                            <div class="text-base font-medium">Надіслати документ на переклад</div>
+                            <div class="text-sm opacity-70">Оцінка вартості за 5 хв</div>
+                        </div>
+                    </a>
+                   
+                    <a href="https://t.me/Alisa_Elf17" target="_blank"
+                       class="flex items-center gap-3 border-2 border-white/80 hover:border-white text-white hover:bg-white/10 font-medium px-8 py-6 rounded-3xl transition-all">
+                        <i class="fab fa-telegram-plane text-4xl"></i>
+                        <span class="text-left">
+                            <span class="block text-sm">Пишіть у Telegram про переклад</span>
+                            <span class="font-semibold">@Alisa_Elf17</span>
+                        </span>
+                    </a>
+                </div>
+               
+                <div class="mt-12 text-sm flex justify-center gap-8 opacity-75">
+                    <div class="flex items-center gap-2">
+                      
+                    </div>
+                    <div class="flex items-center gap-2">
+                      
+                    </div>
+                    <div class="flex items-center gap-2">
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Бегуща строка -->
+        <div class="ticker absolute bottom-0 left-0 right-0 py-3">
+            <div class="ticker-content">
+                <span>Акредитовані перекладачі</span>
+                <span>• 65 мов світу</span>
+                <span>• Нотаріальне засвідчення</span>
+                <span>• Доставка</span>
+                <span>• Нотаріус</span>
+                <span>• Апостиль</span>
+                <span>• Доставка по світу</span>
+                <span>Акредитовані перекладачі</span>
+                <span>• 65 мов світу</span>
+                <span>• Нотаріальне засвідчення</span>
+                <span>• Доставка</span>
+                <span>• Нотаріус</span>
+                <span>• Апостиль</span>
+                <span>• Доставка по світу</span>
+            </div>
+        </div>
+        <!-- Плаваючий "Гортайте вниз" -->
+        <div id="scroll-indicator" class="fixed bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/80 text-xs tracking-widest z-40 transition-opacity duration-500 opacity-100 pointer-events-none">
+            <div class="animate-bounce text-3xl">↓</div>
+            <span>Гортайте вниз</span>
+        </div>
+    </header>
+    <!-- DETAILED DESCRIPTION -->
+    <section class="py-24 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-4xl font-bold logo-font mb-8">Детальний опис послуги перекладу документів</h2>
+            <p class="text-xl text-gray-600 mb-10">Ми пропонуємо професійний переклад документів будь-якої складності на понад 65 мов світу. Наші присяжні та акредитовані перекладачі забезпечують точність і відповідність оригіналу. Ми працюємо з різними типами документів, включаючи:</p>
+            <ul class="text-lg space-y-4 mb-10">
+                <li>✔ Освітні документи: дипломи, атестати, свідоцтва про освіту</li>
+                <li>✔ Юридичні документи: контракти, договори, судові рішення</li>
+                <li>✔ Медичні документи: довідки, виписки, рецепти</li>
+                <li>✔ Особисті документи: паспорти, свідоцтва про народження, шлюб, розлучення</li>
+                <li>✔ Технічні документи: інструкції, патенти, специфікації</li>
+                <li>✔ Фінансові документи: звіти, баланси, рахунки</li>
+            </ul>
+            <p class="text-xl text-gray-600 mb-10">Процес перекладу включає перевірку на точність, форматування та, за потреби, нотаріальне засвідчення. Печатка бюро надається безкоштовно. Терміни виконання - від 1 дня для термінових замовлень. Вартість залежить від обсягу, мови та складності - отримайте розрахунок за 5 хвилин!</p>
+            <div class="flex justify-center">
+                <a href="https://t.me/Alisa_Elf17" target="_blank" class="bg-[#0066cc] text-white px-8 py-4 rounded-2xl font-semibold transition-all hover:bg-[#00cc99]">
+                    Запитати деталі перекладу в Telegram
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- FINAL CTA -->
+    <div class="bg-gradient-to-r from-[#0066cc] to-[#00cc99] py-20 text-white">
+        <div class="max-w-4xl mx-auto text-center px-6">
+            <h2 class="text-5xl font-bold logo-font">Готові замовити переклад?</h2>
+            <p class="text-2xl mt-6 opacity-90">Надішліть документ у Telegram для швидкої оцінки</p>
+           
+            <a href="https://t.me/Alisa_Elf17" target="_blank"
+               class="mt-12 mx-auto flex w-fit items-center gap-6 bg-white text-[#0066cc] hover:scale-110 transition-all shadow-2xl rounded-3xl px-12 py-8 text-2xl font-semibold">
+                <i class="fab fa-telegram-plane text-5xl"></i>
+                <div>
+                    Писати @Alisa_Elf17
+                    <div class="text-xs tracking-widest opacity-60 mt-1">відкриється чат</div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="flex justify-center gap-3 mb-6">
+                <div class="w-9 h-9 bg-white rounded-2xl flex items-center justify-center text-gray-900 text-3xl font-bold logo-font">M</div>
+            </div>
+            <p class="text-sm">© 2024 MKM Doc • Всі права захищено</p>
+            <p class="text-xs mt-2 opacity-50">Професійний переклад документів</p>
+        </div>
+    </footer>
+    <!-- FLOATING TELEGRAM BUTTON -->
+    <a href="https://t.me/Alisa_Elf17" target="_blank"
+       class="floating-btn fixed bottom-8 right-8 bg-[#0088cc] text-white w-16 h-16 rounded-3xl shadow-2xl flex items-center justify-center text-4xl z-50 hover:scale-110 transition-all border-4 border-white">
+        <i class="fab fa-telegram-plane"></i>
+    </a>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Прелоадер з затримкою 3-4 секунди
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.classList.add('hidden');
+            }, Math.random() * 1000 + 3000); // 3-4 секунди
+        });
+        AOS.init({
+            duration: 900,
+            once: true,
+            offset: 100
+        });
+        // Progress bar + scroll indicator
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+            const hero = document.querySelector('header.hero-bg');
+            const indicator = document.getElementById('scroll-indicator');
+            if (hero && indicator) {
+                const heroBottom = hero.getBoundingClientRect().bottom;
+                const windowHeight = window.innerHeight;
+                if (heroBottom > windowHeight) {
+                    indicator.style.opacity = '1';
+                } else {
+                    indicator.style.opacity = '0';
+                }
+            }
+        });
+        // Закриття мобільного меню на ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") {
+                const menu = document.getElementById('mobile-menu');
+                if (!menu.classList.contains('hidden')) menu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
