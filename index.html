@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="uk" class="scroll-smooth">
 <head>
@@ -562,6 +561,29 @@
                         Документи відправляємо по всьому світу<br>
                         Термінові замовлення виконуємо того ж дня
                     </div>
+<!-- Форма зворотного зв'язку -->
+                    <h3 class="text-xl font-semibold mb-6 text-center md:text-left">Залишити заявку</h3>
+                    <form id="lead-form" action="https://cold-resonance-eb72.rdkltt8.workers.dev/" method="POST" class="flex flex-col gap-4">
+                        <input 
+                            name="name" 
+                            placeholder="Ваше ім'я" 
+                            required 
+                            class="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#0066cc]"
+                        >
+                        <input 
+                            name="phone" 
+                            type="tel" 
+                            placeholder="Номер телефону" 
+                            required 
+                            class="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#0066cc]"
+                        >
+                        <button 
+                            type="submit" 
+                            class="bg-[#0066cc] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#004d99] transition shadow-md"
+                        >
+                            Надіслати заявку
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -615,6 +637,7 @@
                 }
             }
         });
+
 // Анімація лічильників (більш надійна версія)
     const counters = document.querySelectorAll('.counter');
     const speed = 150; // Швидкість росту (менше = швидше)
@@ -657,4 +680,3 @@
 </body>
 
 </html>
-
